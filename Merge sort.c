@@ -1,1 +1,64 @@
-{"nbformat":4,"nbformat_minor":0,"metadata":{"colab":{"provenance":[],"authorship_tag":"ABX9TyMNzn3vOVf5iGSvKOq13ktJ"},"kernelspec":{"name":"python3","display_name":"Python 3"},"language_info":{"name":"python"}},"cells":[{"cell_type":"code","execution_count":4,"metadata":{"colab":{"base_uri":"https://localhost:8080/"},"id":"_IV-OTQocolV","executionInfo":{"status":"ok","timestamp":1773376243368,"user_tz":-330,"elapsed":7,"user":{"displayName":"Vijayalakshmi Bharatesh Padanad","userId":"10181891069351427952"}},"outputId":"916a81cf-ed64-4899-bd1b-9f1f6e5e3f51"},"outputs":[{"output_type":"stream","name":"stdout","text":["Writing mergesort.c\n"]}],"source":["%%writefile mergesort.c\n","#include<stdio.h>\n","#include<time.h>\n","\n","void merge(int a[], int l, int m, int r)\n","{\n","    int i=l,j=m+1,k=0,temp[100000];\n","\n","    while(i<=m && j<=r)\n","    {\n","        if(a[i]<=a[j])\n","            temp[k++]=a[i++];\n","        else\n","            temp[k++]=a[j++];\n","    }\n","\n","    while(i<=m)\n","        temp[k++]=a[i++];\n","\n","    while(j<=r)\n","        temp[k++]=a[j++];\n","\n","    for(i=l,k=0;i<=r;i++,k++)\n","        a[i]=temp[k];\n","}\n","\n","void mergesort(int a[], int l, int r)\n","{\n","    if(l<r)\n","    {\n","        int m=(l+r)/2;\n","        mergesort(a,l,m);\n","        mergesort(a,m+1,r);\n","        merge(a,l,m,r);\n","    }\n","}\n","\n","int main()\n","{\n","    int a[100000],n,i;\n","    clock_t start,end;\n","    double time;\n","\n","    printf(\"Enter number of elements: \");\n","    scanf(\"%d\",&n);\n","\n","    printf(\"Enter elements:\\n\");\n","    for(i=0;i<n;i++)\n","        scanf(\"%d\",&a[i]);\n","\n","    start=clock();\n","    mergesort(a,0,n-1);\n","    end=clock();\n","\n","    printf(\"Sorted elements:\\n\");\n","    for(i=0;i<n;i++)\n","        printf(\"%d \",a[i]);\n","\n","    time=(double)(end-start)/CLOCKS_PER_SEC;\n","    printf(\"\\nTime taken: %f seconds\\n\",time);\n","\n","    return 0;\n","}"]},{"cell_type":"code","source":["!gcc mergesort.c"],"metadata":{"id":"2Hnzyet3dv-E","executionInfo":{"status":"ok","timestamp":1773376357958,"user_tz":-330,"elapsed":410,"user":{"displayName":"Vijayalakshmi Bharatesh Padanad","userId":"10181891069351427952"}}},"execution_count":5,"outputs":[]},{"cell_type":"code","source":["!./a.out"],"metadata":{"colab":{"base_uri":"https://localhost:8080/"},"id":"MPtge3z1d9Yd","executionInfo":{"status":"ok","timestamp":1773376462774,"user_tz":-330,"elapsed":26615,"user":{"displayName":"Vijayalakshmi Bharatesh Padanad","userId":"10181891069351427952"}},"outputId":"3ffa797b-dc36-4cf3-8e7b-044c3cbd4cf1"},"execution_count":8,"outputs":[{"output_type":"stream","name":"stdout","text":["Enter number of elements: 5\n","Enter elements:\n","5\n","67\n","43\n","23\n","44\n","Sorted elements:\n","5 23 43 44 67 \n","Time taken: 0.000332 seconds\n"]}]},{"cell_type":"code","source":[],"metadata":{"id":"U0Ow2QGueFP9"},"execution_count":null,"outputs":[]},{"cell_type":"code","source":[],"metadata":{"id":"tjc-0ua9d9xk"},"execution_count":null,"outputs":[]}]}
+#include<stdio.h>
+#include<time.h>
+
+void merge(int a[], int l, int m, int r)
+{
+    int i=l,j=m+1,k=0,temp[100000];
+
+    while(i<=m && j<=r)
+    {
+        if(a[i]<=a[j])
+            temp[k++]=a[i++];
+        else
+            temp[k++]=a[j++];
+    }
+
+    while(i<=m)
+        temp[k++]=a[i++];
+
+    while(j<=r)
+        temp[k++]=a[j++];
+
+    for(i=l,k=0;i<=r;i++,k++)
+        a[i]=temp[k];
+}
+
+void mergesort(int a[], int l, int r)
+{
+    if(l<r)
+    {
+        int m=(l+r)/2;
+        mergesort(a,l,m);
+        mergesort(a,m+1,r);
+        merge(a,l,m,r);
+    }
+}
+
+int main()
+{
+    int a[100000],n,i;
+    clock_t start,end;
+    double time;
+
+    printf("Enter number of elements: ");
+    scanf("%d",&n);
+
+    printf("Enter elements:\n");
+    for(i=0;i<n;i++)
+        scanf("%d",&a[i]);
+
+    start=clock();
+
+    mergesort(a,0,n-1);
+
+    end=clock();
+
+    printf("Sorted elements:\n");
+    for(i=0;i<n;i++)
+        printf("%d ",a[i]);
+
+    time=(double)(end-start)/CLOCKS_PER_SEC;
+    printf("\nTime taken: %f seconds\n",time);
+
+    return 0;
+}
